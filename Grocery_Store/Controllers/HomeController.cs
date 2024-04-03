@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Grocery_Store.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,21 +11,16 @@ namespace Grocery_Store.Controllers
     {
         public ActionResult Index()
         {
+            GroceryStoreDB db = new GroceryStoreDB();
+            var monAns = db.SANPHAMs;
+            var loaiMons = db.LOAISPs;
+            ViewBag.monAns = (from sp in monAns where sp.DangSP == true orderby sp.NgayDangSP descending select sp).Take(6);
+            ViewBag.loaiMons = loaiMons;
             return View();
         }
-
-        public ActionResult About()
+        public ActionResult Admin()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return RedirectToAction("Index", "Dashboards63131236", new { area = "Admin" });
         }
     }
 }
