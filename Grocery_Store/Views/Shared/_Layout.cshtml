@@ -8,12 +8,12 @@
     <meta name="author" content="">
     <title>Home</title>
     @Styles.Render("~/Pubilc/css")
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
     @RenderSection("css", required: false)
     <script src="~/Asset/js/html5shiv.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
 </head><!--/head-->
 <body>
     <header id="header">
@@ -50,7 +50,7 @@
                 <div class="row">
                     <div class="col-md-4 clearfix">
                         <div class="logo">
-                            <a href="@Url.Action("Index","Homes63131236")"><img src="~/Asset/settingweb/home/logo.png" alt="" height="70" /></a>
+                            <a href="@Url.Action("Index","Homes")"><img src="~/Asset/settingweb/home/logo.png" alt="" height="70" /></a>
                         </div>
                     </div>
                     <div class="col-md-8 clearfix">
@@ -61,22 +61,22 @@
                                 }
                                 @if (user.daDangNhap)
                                 {
-                                    <li><a href="@Url.Action("ProfileUser","Users63131236")"><i class="fa fa-user"></i> @user.Account.HoTen</a></li>
+                                    <li><a href="@Url.Action("ProfileUser","Users")"><i class="fa fa-user"></i> @user.Account.HoTen</a></li>
                                 }
                                 else
                                 {
-                                    <li><a href="@Url.Action("Login","Users63131236")"><i class="fa fa-user"></i> Tài Khoản</a></li>
+                                    <li><a href="@Url.Action("Login","Users")"><i class="fa fa-user"></i> Tài Khoản</a></li>
                                 }
                                 <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
-                                <li><a href="@Url.Action("Checkout","Products63131236")"><i class="fa fa-crosshairs"></i> Thanh Toán</a></li>
-                                <li><a href="@Url.Action("Cart","Products63131236")"><i class="fa fa-shopping-cart"></i><span class="badge badge-danger navbar-badge" id="badge"></span> Giỏ Hàng</a></li>
+                                <li><a href="@Url.Action("Checkout","Products")"><i class="fa fa-crosshairs"></i> Thanh Toán</a></li>
+                                <li><a href="@Url.Action("Cart","Products")"><i class="fa fa-shopping-cart"></i><span class="badge badge-danger navbar-badge" id="badge"></span> Giỏ Hàng</a></li>
                                 @if (user.daDangNhap)
                                 {
-                                    <li><a href="@Url.Action("Logout","Users63131236")"><i class="fa fa-lock"></i> Đăng Xuất</a></li>
+                                    <li><a href="@Url.Action("Logout","Users")"><i class="fa fa-lock"></i> Đăng Xuất</a></li>
                                 }
                                 else
                                 {
-                                    <li><a href="@Url.Action("Login","Users63131236")"><i class="fa fa-lock"></i> Đăng Nhập</a></li>
+                                    <li><a href="@Url.Action("Login","Users")"><i class="fa fa-lock"></i> Đăng Nhập</a></li>
                                 }
 
                             </ul>
@@ -101,38 +101,38 @@
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="@Url.Action("Index","Homes63131236")" class="active">Trang chủ</a></li>
+                                <li><a href="@Url.Action("Index","Homes")" class="active">Trang chủ</a></li>
                                 <li class="dropdown">
                                     <a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="@Url.Action("Index","Products63131236")">món ăn</a></li>
-                                        <li><a href="@Url.Action("Checkout","Products63131236")">Thanh Toán</a></li>
-                                        <li><a href="@Url.Action("Cart","Products63131236")">Giỏ hàng</a></li>
+                                        <li><a href="@Url.Action("Index","Products")">Sản phẩm</a></li>
+                                        <li><a href="@Url.Action("Checkout","Products")">Thanh Toán</a></li>
+                                        <li><a href="@Url.Action("Cart","Products")">Giỏ hàng</a></li>
                                         @if (user.daDangNhap)
                                         {
-                                            <li><a href="@Url.Action("Logout","Users63131236")">Đăng Xuất</a></li>
+                                            <li><a href="@Url.Action("Logout","Users")">Đăng Xuất</a></li>
                                         }
                                         else
                                         {
-                                            <li><a href="@Url.Action("Login","Users63131236")">Đăng Nhập</a></li>
+                                            <li><a href="@Url.Action("Login","Users")">Đăng Nhập</a></li>
                                         }
                                     </ul>
                                 </li>
-                                <li><a href="@Url.Action("Index","Blogs63131236")">Bài viết</a></li>
+                                <li><a href="@Url.Action("Index","Blogs")">Bài viết</a></li>
                                 @if (user.Account != null && user.Account.VaiTro == "admin")
                                 {
-                                    <li><a href="@Url.Action("Admin","Homes63131236")">Admin</a></li>
+                                    <li><a href="@Url.Action("Admin","Homes")">Admin</a></li>
                                 }
                                 else
                                 {
-                                    <li><a href="@Url.Action("Contact","Homes63131236")">Liên hệ</a></li>
+                                    <li><a href="@Url.Action("Contact","Homes")">Liên hệ</a></li>
                                 }
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="search_box pull-right">
-                            @using (Html.BeginForm("Search", "Products63131236", FormMethod.Get))
+                            @using (Html.BeginForm("Search", "Products", FormMethod.Get))
                             {
                                 @Html.TextBox("search", "", new { placeholder = "Search" })
                             }

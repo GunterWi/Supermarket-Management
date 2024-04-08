@@ -83,7 +83,7 @@
         <!--features_items-->
         <h2 class="title text-center">MÓN CỦA QUÁN</h2>
         @{ var ii = 0;}
-        @foreach (SANPHAM sp in ViewBag.monAns)
+        @foreach (SANPHAM sp in ViewBag.sanPhams)
         {
             if (ii % 3 == 0)
             {
@@ -96,13 +96,13 @@
                             <img src="@sp.ANH.Url" alt="@sp.TenSP" height="200px" />
                             <h2>@(sp.GiaKM??sp.GiaBan) vnd</h2>
                             <p>@sp.TenSP</p>
-                            <a href="@Url.Action("Product","Products63131236",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
+                            <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                         </div>
                         <div class="product-overlay">
                             <div class="overlay-content">
                                 <h2>@(sp.GiaKM??sp.GiaBan) vnd</h2>
                                 <p>@sp.TenSP</p>
-                                <a href="@Url.Action("Product","Products63131236",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
+                                <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                             </div>
                         </div>
                     </div>
@@ -125,14 +125,14 @@
         <!--category-tab-->
         <div class="col-sm-12">
             <ul class="nav nav-tabs ul">
-                @foreach (LOAISP lspCha in ViewBag.loaiMons)
+                @foreach (LOAISP lspCha in ViewBag.loaiSPs)
                 {
                     <li><a href="#duoi@{@lspCha.ID}" data-toggle="tab">@lspCha.LoaiSP1</a></li>
                 }
             </ul>
         </div>
         <div class="tab-content">
-            @foreach (LOAISP lsp in ViewBag.loaiMons)
+            @foreach (LOAISP lsp in ViewBag.loaiSPs)
             {
                 <div class="tab-pane fade" id="duoi@{@lsp.ID}">
                     @{ IEnumerable<SANPHAM> monAn = (from sp in lsp.SANPHAMs where sp.DangSP == true orderby sp.LuotXem descending select sp).Take(6);}
@@ -145,7 +145,7 @@
                                         <img src="@sp.ANH.Url" alt="@sp.TenSP" height="200px" />
                                         <h2>@(sp.GiaKM??sp.GiaBan) vnd</h2>
                                         <p>@sp.TenSP</p>
-                                        <a href="@Url.Action("Product","Products63131236",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
+                                        <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                                     </div>
                                 </div>
                             </div>
@@ -164,8 +164,8 @@
 
         <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-                @{ GroceryStoreDB db = new GroceryStoreDB(); List<SANPHAM> monAns = db.SANPHAMs.Where(x => x.DangSP == true).ToList(); var i = 0;}
-                @foreach (SANPHAM sp in monAns)
+                @{ GroceryStoreDB db = new GroceryStoreDB(); List<SANPHAM> sanPhams = db.SANPHAMs.Where(x => x.DangSP == true).ToList(); var i = 0;}
+                @foreach (SANPHAM sp in sanPhams)
                 {
                     if (i % 3 == 0)
                     {
@@ -185,12 +185,12 @@
                                     <img src="@sp.ANH.Url" alt="" height="200px" />
                                     <h2>@(sp.GiaKM??sp.GiaBan) vnd</h2>
                                     <p>@sp.TenSP</p>
-                                    <a href="@Url.Action("Product","Products63131236",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                    <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    if (i % 3 == 2 || i == monAns.Count - 1)
+                    if (i % 3 == 2 || i == sanPhams.Count - 1)
                     {
                         @Html.Raw("</div>")
                     }
