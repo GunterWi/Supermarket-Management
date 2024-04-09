@@ -89,18 +89,19 @@
             {
                 @Html.Raw("<div class='row'>")
             }
+            int gia = sp.GiaKM ?? sp.GiaBan;
             <div class="col-sm-4">
                 <div class="product-image-wrapper">
                     <div class="single-products">
                         <div class="productinfo text-center">
                             <img src="@sp.ANH.Url" alt="@sp.TenSP" height="200px" />
-                            <h2>@(sp.GiaKM??sp.GiaBan) vnd</h2>
+                            <h2>@gia.ToString("N0") ₫</h2>
                             <p>@sp.TenSP</p>
                             <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                         </div>
                         <div class="product-overlay">
                             <div class="overlay-content">
-                                <h2>@(sp.GiaKM??sp.GiaBan) vnd</h2>
+                                <h2>@gia.ToString("N0") ₫</h2>
                                 <p>@sp.TenSP</p>
                                 <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                             </div>
@@ -138,12 +139,13 @@
                     @{ IEnumerable<SANPHAM> monAn = (from sp in lsp.SANPHAMs where sp.DangSP == true orderby sp.LuotXem descending select sp).Take(6);}
                     @foreach (SANPHAM sp in monAn)
                     {
+                        int gia = sp.GiaKM ?? sp.GiaBan;
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
                                         <img src="@sp.ANH.Url" alt="@sp.TenSP" height="200px" />
-                                        <h2>@(sp.GiaKM??sp.GiaBan) vnd</h2>
+                                        <h2>@gia.ToString("N0") ₫</h2>
                                         <p>@sp.TenSP</p>
                                         <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                                     </div>
@@ -178,12 +180,13 @@
                             @Html.Raw("<div class=\"item\">")
                         }
                     }
+                    int gia = sp.GiaKM ?? sp.GiaBan;
                     <div class="col-sm-4">
                         <div class="product-image-wrapper">
                             <div class="single-products">
                                 <div class="productinfo text-center">
                                     <img src="@sp.ANH.Url" alt="" height="200px" />
-                                    <h2>@(sp.GiaKM??sp.GiaBan) vnd</h2>
+                                    <h2>@gia.ToString("N0") ₫</h2>
                                     <p>@sp.TenSP</p>
                                     <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                 </div>

@@ -6,8 +6,8 @@
     using (GroceryStoreDB db = new GroceryStoreDB())
     {
         //lấy số tiền lớn nhất
-        var maxmoney = db.SANPHAMs.Max(sp => sp.GiaBan);
-        ViewBag.max = maxmoney;
+        var maxMoney = ((db.SANPHAMs.Max(sp => sp.GiaBan) + 99) / 100) * 100;
+        ViewBag.max = maxMoney;
     }
 }
 @section css{

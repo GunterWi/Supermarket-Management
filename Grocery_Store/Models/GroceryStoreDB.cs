@@ -118,5 +118,7 @@ namespace Grocery_Store.Models
                 .HasForeignKey(e => e.TinhThanh)
                 .WillCascadeOnDelete(false);
         }
+
+        public System.Data.Entity.DbSet<Grocery_Store.Models.User> Users { get; set; }
     }
 }

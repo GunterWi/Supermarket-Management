@@ -1,15 +1,15 @@
 ﻿using Grocery_Store.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Grocery_Store.Controllers
 {
-    public class HomeController : Controller
+    public class HomesController : Controller
     {
+        // GET: Homes
         public ActionResult Index()
         {
             GroceryStoreDB db = new GroceryStoreDB();
