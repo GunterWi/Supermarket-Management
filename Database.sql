@@ -325,6 +325,17 @@ BEGIN
     WHERE Url LIKE '%' + @folderOldName + '%';
 END;
 GO
+CREATE PROCEDURE Update_url_anh
+    @ID INT,
+    @NewUrl NVARCHAR(100)
+AS
+BEGIN
+    -- Cập nhật URL mới cho bản ghi có ID tương ứng
+    UPDATE ANH
+    SET Url = @NewUrl
+    WHERE ID = @ID;
+END;
+GO
 CREATE PROCEDURE GetTotalSumIn7days
 AS
 BEGIN

@@ -8,7 +8,7 @@
     {
         var avatar = db.ANHs.FirstOrDefault(av => av.ID == Model.Avatar);
 
-        ViewBag.Avatar = avatar != null ? avatar.Url : null;
+        ViewBag.Avatar = avatar != null ? avatar.Url : "/Asset/Image/profile/default.png";
     }
     ViewBag.Title = "ProfileUser";
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

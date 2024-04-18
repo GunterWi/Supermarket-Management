@@ -95,7 +95,6 @@ namespace Grocery_Store.Controllers
                     kh.DuocSD = true;
                     kh.NgayCap = DateTime.Now;
                     kh.VaiTro = "user";
-                    kh.Avatar = 59; // hiện tại cho là default, lười làm hàm tìm kiếm file ảnh default rồi gán ID, cho mặc định luôn =))
                     db.TAIKHOANs.Add(kh);
                     db.SaveChanges();
                     User user = (User)Session.Contents["Account"];
@@ -131,7 +130,7 @@ namespace Grocery_Store.Controllers
             if (Avatar != null)
             {
                 // Nếu có ảnh cũ, lưu đường dẫn để xóa sau khi cập nhật cơ sở dữ liệu thành công
-                if (!string.IsNullOrEmpty(taiKhoan1.ANH.Url) && !taiKhoan1.ANH.Url.Equals("/Asset/Image/profile/default.png"))
+                if (!string.IsNullOrEmpty(taiKhoan1.ANH.Url))
                 {
                     oldImagePath = Server.MapPath(taiKhoan1.ANH.Url);
                 }
@@ -142,13 +141,22 @@ namespace Grocery_Store.Controllers
                 Avatar.SaveAs(fullPath);
 
                 // Tạo đối tượng ảnh mới và thêm vào cơ sở dữ liệu
-                ANH newAvatar = new ANH() { Url = "/Asset/Image/profile/" + fileName };
-                db.ANHs.Add(newAvatar);
-                db.SaveChanges();
+                if (oldImagePath == null)
+                {
+                    ANH newAvatar = new ANH() { Url = "/Asset/Image/profile/" + fileName };
+                    db.ANHs.Add(newAvatar);
+                    db.SaveChanges();
+                    taiKhoan1.Avatar = newAvatar.ID;
+                }
+                // Nếu có ảnh cũ và cập nhật cơ sở dữ liệu thành công, xóa ảnh cũ
+                if (oldImagePath != null && System.IO.File.Exists(oldImagePath))
+                {
+                    db.Database.ExecuteSqlCommand("EXEC Update_url_anh @param1, @param2", new SqlParameter("param1", taiKhoan1.ANH.ID), new SqlParameter("param2", "/Asset/Image/profile/" + fileName));
+                    db.SaveChanges();
+                    System.IO.File.Delete(oldImagePath);
+                }
 
-                taiKhoan1.Avatar = newAvatar.ID;
             }
-
             // Cập nhật thông tin khác của tài khoản
             taiKhoan1.HoTen = Hoten;
             taiKhoan1.Email = Email;
@@ -159,23 +167,14 @@ namespace Grocery_Store.Controllers
                 // Cập nhật thông tin tài khoản trong cơ sở dữ liệu
                 user.Account = taiKhoan1;
                 db.SaveChanges();
-
-                // Nếu có ảnh cũ và cập nhật cơ sở dữ liệu thành công, xóa ảnh cũ
-                if (oldImagePath != null && System.IO.File.Exists(oldImagePath))
-                {
-                    Trace.WriteLine(oldImagePath);
-                    db.Database.ExecuteSqlCommand("EXEC remov_file_anh @param1", new SqlParameter("param1", oldImagePath));
-                    db.SaveChanges();
-                    System.IO.File.Delete(oldImagePath);
-                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            return View(taiKhoan1);
-            //return RedirectToAction("Index", "Homes");
+            //return View(taiKhoan1);
+            return RedirectToAction("ProfileUser", "Users");
         }
 
 
