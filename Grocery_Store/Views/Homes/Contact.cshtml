@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="contact-page" class="container">
+    <div class="bg">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="title text-center">Liên lạc <strong>Với chúng tôi</strong></h2>
+                <div id="gmap" class="contact-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11027.244921538997!2d109.19875487548076!3d12.267229307076994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317067ed3a052f11%3A0xd464ee0a6e53e8b7!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBOaGEgVHJhbmc!5e0!3m2!1svi!2s!4v1703881492870!5m2!1svi!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="contact-form">
+                    <h2 class="title text-center">Liên hệ</h2>
+                    <div class="status alert alert-success" style="display: none"></div>
+                    <form id="main-contact-form" class="contact-form row" name="contact-form" method="post">
+                        <div class="form-group col-md-6">
+                            <input type="text" name="name" class="form-control" required="required" placeholder="Tên">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="email" name="email" class="form-control" required="required" placeholder="Email">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <input type="text" name="subject" class="form-control" required="required" placeholder="Tiêu đề">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <textarea name="message" id="message" required="required" class="form-control" rows="8" placeholder="Tin nhắn"></textarea>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <input type="submit" name="submit" class="btn btn-primary pull-right" value="Gửi">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="contact-info">
+                    <h2 class="title text-center">
+                        Chăm sóc khách hàng
+                    </h2>
+                    <address>
+                        <p>E-Shopper Inc.</p>
+                        <p>935 W. Webster Ave New Streets Chicago, IL 60614, NY</p>
+                        <p>Newyork USA</p>
+                        <p>Mobile: +2346 17 38 93</p>
+                        <p>Fax: 1-714-252-0026</p>
+                        <p>Email: info@e-shopper.com</p>
+                    </address>
+                    <div class="social-networks">
+                        <h2 class="title text-center">Kết nối với chúng tôi</h2>
+                        <ul>
+                            <li>
+                                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa-brands fa-google-plus-g"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--/#contact-page-->

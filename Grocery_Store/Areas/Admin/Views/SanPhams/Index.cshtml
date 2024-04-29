@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Grocery_Store.Models.SANPHAM>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ANH.Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LOAISP.LoaiSP1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TenSP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TenDuongDan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TomTat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NgayDangSP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GiaBan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GiaKM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dvt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SoLuong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NdSP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LuotXem)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LuotMua)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DangSP)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ANH.Url)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LOAISP.LoaiSP1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TenSP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TenDuongDan)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TomTat)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NgayDangSP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GiaBan)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GiaKM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dvt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SoLuong)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NdSP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LuotXem)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LuotMua)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DangSP)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Grocery_Store.Models.DONHANG>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PHUONGXA.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QUANHUYEN.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TAIKHOAN.HoTen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TINHTHANH.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DcGiaoHang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.XuatHD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NgayDatHang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NgayGiaoHang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ThanhCong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DvVanChuyen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaVanChuyen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhiShip)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GhiChuKhach)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GhiChuShop)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PHUONGXA.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QUANHUYEN.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TAIKHOAN.HoTen)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TINHTHANH.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DcGiaoHang)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.XuatHD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NgayDatHang)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NgayGiaoHang)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ThanhCong)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DvVanChuyen)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaVanChuyen)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhiShip)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GhiChuKhach)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GhiChuShop)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

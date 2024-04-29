@@ -17,7 +17,7 @@ namespace Grocery_Store.Models
         }
         public IEnumerable<DANHMUC> GetDanhMuc()
         {
-            var DANHMUC = db.DANHMUCs.Include("LOAISPs").ToList();
+            var DANHMUC = db.DANHMUCs.Include("LOAISPs").AsNoTracking().ToList();
             return DANHMUC;
         }
         // hàm xóa dấu tiếng việt

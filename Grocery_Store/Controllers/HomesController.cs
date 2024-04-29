@@ -24,6 +24,10 @@ namespace Grocery_Store.Controllers
             ViewBag.loaiSPs = topLoaiSanPham;
             return View();
         }
+        public ActionResult Contact()
+        {
+            return View();
+        }
         public ActionResult Admin()
         {
             return RedirectToAction("Index", "Dashboards", new { area = "Admin" });

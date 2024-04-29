@@ -135,6 +135,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AnhsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DanhMucsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DashboardsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DonhangsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LoaiSPsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SanPhamsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TaiKhoansController.cs" />
+    <Compile Include="Areas\Admin\Data\OrderSummary.cs" />
     <Compile Include="Controllers\HomesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -2540,6 +2549,16 @@
     <Content Include="Asset\Trumbowyg\plugins\specialchars\ui\sass\trumbowyg.specialchars.scss" />
     <Content Include="Asset\Trumbowyg\plugins\table\ui\sass\trumbowyg.table.scss" />
     <Content Include="Asset\Trumbowyg\ui\sass\trumbowyg.scss" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboards\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\DanhMucs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Donhangs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\LoaiSPs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SanPhams\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Anhs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\TaiKhoans\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -2571,6 +2590,7 @@
     <Content Include="Views\Products\Cart.cshtml" />
     <Content Include="Views\Products\Checkout.cshtml" />
     <Content Include="Views\Products\OrderManagement.cshtml" />
+    <Content Include="Views\Homes\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
