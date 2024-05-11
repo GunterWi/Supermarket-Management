@@ -15,7 +15,8 @@ namespace Grocery_Store
                                                                "~/Asset/Admin/plugins/jqvmap/jqvmap.min.css",
                                                                "~/Asset/Admin/dist/css/adminlte.min.css",
                                                                "~/Asset/Admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
-                                                               "~/Asset/Admin/plugins/daterangepicker/daterangepicker.css"));
+                                                               "~/Asset/Admin/plugins/daterangepicker/daterangepicker.css",
+                                                               "~/Content/toastr.css"));
             // Add Script to bundle 
             bundles.Add(new ScriptBundle("~/Admin/js").Include("~/Asset/Admin/plugins/jquery/jquery.min.js",
                                                               "~/Asset/Admin/plugins/jquery-ui/jquery-ui.min.js",
@@ -32,7 +33,8 @@ namespace Grocery_Store
                                                               "~/Asset/Admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js",
                                                               "~/Asset/Admin/dist/js/adminlte.min.js",
                                                               "~/Asset/Admin/dist/js/demo.js",
-                                                              "~/Asset/Admin/dist/js/pages/dashboard.js"));
+                                                              "~/Asset/Admin/dist/js/pages/dashboard.js",
+                                                              "~/Scripts/toastr.js"));
 
             bundles.Add(new StyleBundle("~/Pubilc/css").Include("~/Asset/css/bootstrap.min.css",
                                                                 "~/Asset/css/prettyPhoto.css",

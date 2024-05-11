@@ -6,10 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Grocery_Store.Areas.Admin.Data;
 using Grocery_Store.Models;
 
 namespace Grocery_Store.Areas.Admin.Controllers
 {
+    [CustomAuthor(Roles = "admin")]
     public class AnhsController : Controller
     {
         private GroceryStoreDB db = new GroceryStoreDB();

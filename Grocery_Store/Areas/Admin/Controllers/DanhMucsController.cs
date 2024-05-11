@@ -7,10 +7,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Grocery_Store.Areas.Admin.Data;
 using Grocery_Store.Models;
 
 namespace Grocery_Store.Areas.Admin.Controllers
 {
+    [CustomAuthor(Roles = "admin")]
     public class DanhMucsController : Controller
     {
         private GroceryStoreDB db = new GroceryStoreDB();
@@ -24,53 +26,34 @@ namespace Grocery_Store.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(DANHMUC dm)
         {
-            bool luu = true;
-            if (String.IsNullOrEmpty(dm.TenDanhMuc))
+            if (!ModelState.IsValid)
             {
-                ModelState["TenDanhMuc"].Errors.Add("Tên danh mục không được để trống");
-                luu = false;
+                // Lấy danh sách lỗi từ ModelState
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToList();
+
+                // Trả về đối tượng JSON chứa thông tin lỗi
+                return Json(new { success = false, errors });
             }
-            /* if (String.IsNullOrEmpty(dm.TenDuongDan))
-             {
-                 ModelState["TenDuongDan"].Errors.Add("Tên đường dẫn không được để trống");
-                 luu = false;
-             }*/
-            /* if (db.LOAIMONs.Where(x => x.TenDuongDan == dm.TenDuongDan).ToList().Count > 0)
-             {
-                 ModelState["TenDuongDan"].Errors.Add("Tên đường dẫn đã tồn tại");
-                 luu = false;
-             }*/
-            // lưu đữ liệu
-            if (luu)
-            {
-                try
-                {
-                    db.DANHMUCs.Add(dm);
-                    db.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            return RedirectToAction("Index");
+            db.DANHMUCs.Add(dm);
+            db.SaveChanges();
+            return Json(new { success = true });
         }
 
-     
+
         public ActionResult Edit(DANHMUC dm)
         {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+            }
             DANHMUC danhmuc = db.DANHMUCs.Where(x => x.ID == dm.ID).First();
             danhmuc.TenDanhMuc = dm.TenDanhMuc;
             /*danhmuc.TenDuongDan = dm.TenDuongDan;*/
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return RedirectToAction("Index");
+            db.SaveChanges();
+
+            return Json(new { success = true });
         }
         public ActionResult Delete(int id)
         {

@@ -1,10 +1,11 @@
-namespace Grocery_Store.Models
+﻿namespace Grocery_Store.Models
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web.Mvc;
 
     [Table("LOAISP")]
     public partial class LOAISP
@@ -15,13 +16,16 @@ namespace Grocery_Store.Models
             SANPHAMs = new HashSet<SANPHAM>();
         }
 
+        [HiddenInput]
         public int ID { get; set; }
 
         [Column("LoaiSP")]
         [StringLength(30)]
+        [Required(ErrorMessage = "Tên thể loại không được để trống")]
         public string LoaiSP1 { get; set; }
 
         [StringLength(30)]
+        [Required(ErrorMessage = "Tên đường dẫn không được để trống")]
         public string TenDuongDan { get; set; }
 
         [StringLength(50)]

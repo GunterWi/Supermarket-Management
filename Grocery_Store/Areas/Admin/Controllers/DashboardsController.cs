@@ -12,6 +12,7 @@ using Grocery_Store.Models;
 
 namespace Grocery_Store.Areas.Admin.Controllers
 {
+    [CustomAuthor(Roles = "admin")]
     public class DashboardsController : Controller
     {
         private GroceryStoreDB db = new GroceryStoreDB();

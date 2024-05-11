@@ -98,7 +98,7 @@
     </div>
     <!-- /.row -->
     <!--Modal-content-Thêm mới loại món ăn -->
-    @using (Html.BeginForm("Create", "DanhMucs", FormMethod.Post))
+    @using (Html.BeginForm("Create", "DanhMucs", FormMethod.Post, new { id = "formCreate" }))
     {
         <div class="modal fade" id="ThemMoi" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-lg">
@@ -110,7 +110,6 @@
                         </button>
                     </div>
                     <div class="modal-body form-inline">
-                        @Html.HiddenFor(m => m.ID)
                         <label class="mb-2 ml-sm-2">Nhập tên danh mục</label>
                         @Html.TextBoxFor(m => m.TenDanhMuc, new { @class = "form-control mb-2 ml-sm-2" })
                         @Html.ValidationMessageFor(m => m.TenDanhMuc, "", new { style = "color:red" })
@@ -129,7 +128,7 @@
         </div>
     }
     <!--Modal-content-Sửa loại món ăn -->
-    @using (Html.BeginForm("Edit", "DanhMucs", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "DanhMucs", FormMethod.Post, new { id = "formEdit" }))
     {
         <div class="modal fade" id="Sua" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-lg">
@@ -246,5 +245,57 @@
                 }
             });
         }
+        $(document).ready(function () {
+            $('#formCreate').submit(function (e) {
+                e.preventDefault(); // Ngăn chặn gửi form theo cách thông thường
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Create", "DanhMucs")',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            $('#ThemMoi').modal('hide');
+                            toastr.success('Tạo mới thành công');
+                            setTimeout(function() {
+                                window.location.href = '@Url.Action("Index", "DanhMucs")';
+                            }, 2000);
+                        } else {
+                            // Hiển thị thông báo toast với lỗi
+                            $.each(response.errors, function (index, error) {
+                                toastr.error(error);
+                            });
+                        }
+                    },
+                    error: function () {
+                        toastr.error('Đã xảy ra lỗi khi tạo mới');
+                    }
+                });
+            });
+            $('#formEdit').submit(function (e) {
+                e.preventDefault(); // Ngăn chặn gửi form theo cách thông thường
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Edit", "DanhMucs")',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            $('#Sua').modal('hide');
+                            toastr.success('Sửa thành công');
+                            setTimeout(function() {
+                                window.location.href = '@Url.Action("Index", "DanhMucs")';
+                            }, 2000);
+                        } else {
+                            // Hiển thị thông báo toast với lỗi
+                            $.each(response.errors, function (index, error) {
+                                toastr.error(error);
+                            });
+                        }
+                    },
+                    error: function () {
+                        toastr.error('Đã xảy ra lỗi khi sửa');
+                    }
+                });
+            });
+        });
     </script>
 }
