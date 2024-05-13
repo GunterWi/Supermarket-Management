@@ -1,5 +1,6 @@
-namespace Grocery_Store.Models
+﻿namespace Grocery_Store.Models
 {
+    using Grocery_Store.Areas.Admin.Data;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -18,26 +19,31 @@ namespace Grocery_Store.Models
 
         public int ID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Họ tên không được để trống")]
         [StringLength(30)]
         public string HoTen { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Tên tài khoản không được để trống")]
         [StringLength(30)]
+        [UniqueUser("TenTK")]
         public string TenTK { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Mật khẩu không được để trống")]
         [StringLength(50)]
         public string MatKhau { get; set; }
-
+        [NotMapped]
+        [Compare("MatKhau", ErrorMessage = "Mật khẩu xác nhận không khớp")]
+        public string XnMK { get; set; }
         public DateTime NgayCap { get; set; }
 
         public bool GioiTinh { get; set; }
 
         [StringLength(15)]
+        [UniqueUser("SDT")]
         public string SDT { get; set; }
 
         [StringLength(30)]
+        [UniqueUser("Email")]
         public string Email { get; set; }
 
         public bool DuocSD { get; set; }

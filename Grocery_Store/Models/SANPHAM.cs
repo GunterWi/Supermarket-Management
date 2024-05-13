@@ -1,10 +1,12 @@
-namespace Grocery_Store.Models
+﻿namespace Grocery_Store.Models
 {
+    using Grocery_Store.Areas.Admin.Data;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web.Mvc;
 
     [Table("SANPHAM")]
     public partial class SANPHAM
@@ -16,17 +18,18 @@ namespace Grocery_Store.Models
             CHITIETDHs = new HashSet<CHITIETDH>();
             ANHs = new HashSet<ANH>();
         }
-
+        [HiddenInput]
         public int ID { get; set; }
 
         public int MaLoai { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
         [StringLength(40)]
         public string TenSP { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Tên đường dẫn không được để trống")]
         [StringLength(40)]
+        [UniquePath(typeof(SANPHAM))]
         public string TenDuongDan { get; set; }
 
         [StringLength(100)]
@@ -34,18 +37,22 @@ namespace Grocery_Store.Models
 
         public DateTime NgayDangSP { get; set; }
 
+        [Required(ErrorMessage = "Giá bán không được để trống")]
         public int GiaBan { get; set; }
 
         public int? GiaKM { get; set; }
 
-        [Required]
         [StringLength(10)]
         public string Dvt { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Số lượng không được nhỏ hơn 0")]
+        [Required(ErrorMessage = "Số lượng không được để trống")]
         public int SoLuong { get; set; }
 
+        [Required(ErrorMessage = "Ảnh bìa không được để trống")]
         public int AnhBia { get; set; }
 
+        [Required(ErrorMessage = "Nội dung sản phẩm không được để trống")]
         public string NdSP { get; set; }
 
         public int LuotXem { get; set; }

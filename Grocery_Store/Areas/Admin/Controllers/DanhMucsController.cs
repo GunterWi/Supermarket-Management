@@ -12,7 +12,7 @@ using Grocery_Store.Models;
 
 namespace Grocery_Store.Areas.Admin.Controllers
 {
-    [CustomAuthor(Roles = "admin")]
+    [CustomAuthor(Roles = "Admin")]
     public class DanhMucsController : Controller
     {
         private GroceryStoreDB db = new GroceryStoreDB();
@@ -70,9 +70,7 @@ namespace Grocery_Store.Areas.Admin.Controllers
             catch (Exception e)
             {
                 TempData["Error"] = "Lỗi khi xóa: " + e.Message;
-                return RedirectToAction("Index");
-                Console.WriteLine(e.Message);
-            }
+                return RedirectToAction("Index");            }
             return RedirectToAction("Index");
         }
         // Thực hiện ajax để lấy dữ liệu cho chỉnh sửa thể loại 

@@ -143,8 +143,6 @@ namespace Grocery_Store.Controllers
                 }
 
             }
-
-            return Redirect("/");
         }
         // sản phẩm theo thể loại 
         public ActionResult Category(string id, int? page)

@@ -31,7 +31,7 @@ namespace Grocery_Store.Controllers
         public ActionResult Login(string TaiKhoan, string MatKhau)
         {
             User user = (User)Session.Contents["Account"];
-            if (user == null)
+            if (user.Account == null)
             {
                 user = new User();
                 Session.Contents["Account"] = user;

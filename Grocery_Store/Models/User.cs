@@ -32,6 +32,7 @@ namespace Grocery_Store.Models
                 return true;
             }
         }
+        // refresh lại đơn đặt hàng đã đặt và bình luận
         public void RefreshUserData()
         {
             if (this.id.HasValue)

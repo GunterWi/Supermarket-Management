@@ -1,5 +1,6 @@
 ﻿namespace Grocery_Store.Models
 {
+    using Grocery_Store.Areas.Admin.Data;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -26,6 +27,7 @@
 
         [StringLength(30)]
         [Required(ErrorMessage = "Tên đường dẫn không được để trống")]
+        [UniquePath(typeof(LOAISP))]
         public string TenDuongDan { get; set; }
 
         [StringLength(50)]

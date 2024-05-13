@@ -1,112 +1,145 @@
-﻿@model IEnumerable<Grocery_Store.Models.SANPHAM>
-
+﻿@using Grocery_Store.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<SANPHAM>
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Product_List";
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ANH.Url)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LOAISP.LoaiSP1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TenSP)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TenDuongDan)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TomTat)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NgayDangSP)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GiaBan)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GiaKM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Dvt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SoLuong)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NdSP)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LuotXem)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LuotMua)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DangSP)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ANH.Url)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LOAISP.LoaiSP1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TenSP)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TenDuongDan)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TomTat)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NgayDangSP)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GiaBan)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GiaKM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Dvt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SoLuong)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NdSP)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LuotXem)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LuotMua)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DangSP)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+@section css{
+    <style>
+        .table td, .table th {
+            text-align: center;
+        }
+    </style>
 }
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Danh sách sản phẩm</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Danh sách sản phẩm</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                @using (Html.BeginForm("Search_Product", "SanPhams", FormMethod.Get))
+                {
+                    <div class="card-header">
+                        <h3 class="card-title">Danh sách sản phẩm</h3>
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="search" class="form-control float-right" placeholder="Tên sản phẩm">
 
-</table>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Ảnh Bìa</th>
+                                <th>Loại sản phẩm</th>
+                                <th>Giá Bán</th>
+                                <th>Giá Khuyến Mãi</th>
+                                <th>Số lượng</th>
+                                <th>Lượt xem</th>
+                                <th>Lượt mua</th>
+                                <th>Ngày đăng</th>
+                                <th>Trạng thái</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (SANPHAM sanPham in Model)
+                            {
+                                <tr>
+                                    <td>@sanPham.ID</td>
+                                    <td>@sanPham.TenSP</td>
+                                    <td><img src="@sanPham.ANH.Url" height="30px" /></td>
+                                    <td>@sanPham.LOAISP.LoaiSP1</td>
+                                    <td>@sanPham.GiaBan</td>
+                                    <td>@sanPham.GiaKM</td>
+                                    <td>@sanPham.SoLuong</td>
+                                    <td>@sanPham.LuotXem</td>
+                                    <td>@sanPham.LuotMua</td>
+                                    <td>@sanPham.NgayDangSP.ToString("dd/MM/yyyy")</td>
+                                    @if (sanPham.DangSP)
+                                    {
+                                        <td style="color:lawngreen">Đã đăng</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="color:firebrick">Nháp</td>
+                                    }
+                                    <td>
+                                        <div class="dropdown">
+                                            <span class="dropdown-toggle" style="cursor:pointer" data-toggle="dropdown">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                            <div class="dropdown-menu">
+                                                <a href="@Url.Action("Edit","SanPhams", routeValues: new {id = sanPham.ID, })" class="dropdown-item">Sửa</a>
+                                                <a href="@Url.Action("Delete","SanPhams", routeValues: new {id = sanPham.ID, })" class="dropdown-item">Xóa</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-header">
+                    <div class="card-tools">
+                        @if (ViewBag.search != null)
+                        {   /*Trang pages*/
+                            @Html.PagedListPager(Model, page => Url.Action("Search_Product", "SanPhams", routeValues: new { search = ViewBag.search, page = page }),
+                                                                           new PagedListRenderOptions
+                                                                           {
+                                                                               DisplayLinkToIndividualPages = true,
+                                                                               MaximumPageNumbersToDisplay = 3,
+                                                                               LiElementClasses = new string[] { "page-item", "page-link" },
+                                                                               UlElementClasses = new string[] { "pagination", "pagination-sm", "m-0", "float-right" },
+                                                                           })
+                        }
+                        else
+                        {
+                            @Html.PagedListPager(Model, page => Url.Action("Index", "SanPhams", routeValues: new { search = ViewBag.search, page = page }),
+                                                                           new PagedListRenderOptions
+                                                                           {
+                                                                               DisplayLinkToIndividualPages = true,
+                                                                               MaximumPageNumbersToDisplay = 3,
+                                                                               LiElementClasses = new string[] { "page-item", "page-link" },
+                                                                               UlElementClasses = new string[] { "pagination", "pagination-sm", "m-0", "float-right" },
+                                                                           })
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+

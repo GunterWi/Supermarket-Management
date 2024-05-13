@@ -11,7 +11,7 @@ using Grocery_Store.Models;
 
 namespace Grocery_Store.Areas.Admin.Controllers
 {
-    [CustomAuthor(Roles = "admin")]
+    [CustomAuthor(Roles = "Admin")]
     public class DonhangsController : Controller
     {
         private GroceryStoreDB db = new GroceryStoreDB();

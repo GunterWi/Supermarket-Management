@@ -1,0 +1,155 @@
+﻿@using PagedList.Mvc
+@using Grocery_Store.Models
+@model PagedList.PagedList<TAIKHOAN>
+@using System.Linq
+@{
+    ViewBag.Title = "UserManagement";
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Quản lý người dùng</h3>
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" id="Search" name="table_search" class="form-control float-right" placeholder="Tên tài khoản">
+
+                            <div class="input-group-append">
+                                <button type="button" id="Search-btn" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Tên tài khoản</th>
+                                <th>Số đơn đặt món</th>
+                                <th>Tỷ lệ giao thành công</th>
+                                <th></th>
+                                <th>Vai trò</th>
+                                <th>Tình trạng</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (TAIKHOAN taiKhoan in Model)
+                            {
+                                int thanhCong = taiKhoan.DONHANGs.Where(x => x.ThanhCong == true).ToList().Count;
+                                int tongDong = taiKhoan.DONHANGs.Count;
+                                int tyLe = tongDong == 0 ? 0 : (int)(((double)thanhCong / (double)tongDong) * 100);
+
+                                <tr>
+                                    <td>@taiKhoan.ID</td>
+                                    <td class="TenTK"><a href="@Url.Action("UserProfile","TaiKhoans",routeValues: new {id = taiKhoan.ID })">@taiKhoan.TenTK</a></td>
+                                    <td>@taiKhoan.DONHANGs.Count</td>
+                                    <td>
+                                        <div class="progress progress-xs">
+                                            <div class="progress-bar progress-bar-danger" style="width: @tyLe%"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-danger">@tyLe%</span>
+                                    </td>
+                                    <td>@taiKhoan.VaiTro</td>
+                                    @if (taiKhoan.DuocSD)
+                                    {
+                                        <td style="color:lawngreen">Đang hoạt động</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="color:firebrick">Bị khóa</td>
+                                    }
+                                    <td>
+                                        <div class="dropdown-menu-right">
+                                            <span class="dropdown-toggle" style="cursor:pointer" data-toggle="dropdown">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                            <div class="dropdown-menu">
+                                                @if (taiKhoan.DuocSD)
+                                                {
+                                                    <a href="@Url.Action("SettingUser","TaiKhoans",routeValues: new {id = taiKhoan.ID, type = 1 })" class="dropdown-item">Khóa tài khoản</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("SettingUser","TaiKhoans",routeValues: new {id = taiKhoan.ID, type = 1 })" class="dropdown-item">Mở khóa tài khoản</a>
+                                                }
+                                                @if (taiKhoan.VaiTro == "User")
+                                                {
+                                                    <a href="@Url.Action("SettingUser","TaiKhoans",routeValues: new {id = taiKhoan.ID, type = 2 })" class="dropdown-item">Thăng lên làm admin</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("SettingUser","TaiKhoans",routeValues: new {id = taiKhoan.ID, type = 2 })" class="dropdown-item">Giảm cấp thành user</a>
+                                                }
+                                                <a href="@Url.Action("SettingUser","TaiKhoans",routeValues: new {id = taiKhoan.ID, type = 3 })" class="dropdown-item">Xóa tài khoản</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    @Html.PagedListPager(Model, page => Url.Action("UserManagement", "TaiKhoans", routeValues: new { page = page }),
+                                    new PagedListRenderOptions
+                                    {
+                                        DisplayLinkToIndividualPages = true,
+                                        MaximumPageNumbersToDisplay = 3,
+                                        LiElementClasses = new string[] { "page-item", "page-link" },
+                                        UlElementClasses = new string[] { "pagination", "pagination-sm", "m-0", "float-right" },
+                                    })
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>
+@section js{
+    <script>
+        $(document).ready(function () {
+            function searchTable(value) {
+                $(".TenTK").each(function () {
+                    if ($(this).text().search(value) > -1) {
+                        $(this).parent().show();
+                    } else {
+                        $(this).parent().hide();
+                    }
+                });
+            }
+
+            $("#Search").keydown(function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault(); // Để ngăn chặn form gửi đi khi nhấn Enter
+                    var searchValue = $("#Search").val();
+                    searchTable(searchValue);
+                }
+            });
+
+            $("#Search-btn").click(function () {
+                var searchValue = $("#Search").val();
+                searchTable(searchValue);
+            });
+
+            // Khi input rỗng
+            $("#Search").on("input", function () {
+                var searchValue = $(this).val();
+                if (searchValue === '') {
+                    $(".TenTK").parent().show(); // Hiển thị tất cả các hàng nếu không có giá trị tìm kiếm
+                } else {
+                    searchTable(searchValue);
+                }
+            });
+        })
+    </script>
+}

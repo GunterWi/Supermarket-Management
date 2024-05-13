@@ -2,128 +2,180 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Grocery_Store.Areas.Admin.Data;
 using Grocery_Store.Models;
+using PagedList;
 
 namespace Grocery_Store.Areas.Admin.Controllers
 {
-    [CustomAuthor(Roles = "admin")]
+    [CustomAuthor(Roles = "Admin")]
     public class SanPhamsController : Controller
     {
         private GroceryStoreDB db = new GroceryStoreDB();
 
         // GET: Admin/SanPhams
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var sANPHAMs = db.SANPHAMs.Include(s => s.ANH).Include(s => s.LOAISP);
-            return View(sANPHAMs.ToList());
+            int pageNum = (page ?? 1);
+            var sanPham = db.SANPHAMs;
+            List<SANPHAM> sanPhams = (from sp in sanPham orderby sp.ID ascending select sp).ToList();
+            return View(sanPhams.ToPagedList(pageNum, 10));
         }
-
-        // GET: Admin/SanPhams/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            SANPHAM sANPHAM = db.SANPHAMs.Find(id);
-            if (sANPHAM == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sANPHAM);
-        }
-
-        // GET: Admin/SanPhams/Create
+        // Create Product
         public ActionResult Create()
         {
-            ViewBag.AnhBia = new SelectList(db.ANHs, "ID", "Url");
-            ViewBag.MaLoai = new SelectList(db.LOAISPs, "ID", "LoaiSP1");
+            ViewBag.SANPHAM = new List<SANPHAM>();
             return View();
         }
-
-        // POST: Admin/SanPhams/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,MaLoai,TenSP,TenDuongDan,TomTat,NgayDangSP,GiaBan,GiaKM,Dvt,SoLuong,AnhBia,NdSP,LuotXem,LuotMua,DangSP")] SANPHAM sANPHAM)
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Create(SANPHAM sp, string tva, bool preview = false)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.SANPHAMs.Add(sANPHAM);
+                ViewBag.SANPHAM = new List<SANPHAM>();
+                // Lấy danh sách lỗi từ ModelState
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToList();
+
+                // Trả về đối tượng JSON chứa thông tin lỗi
+                return Json(new { success = false, errors });
+            }
+            if (String.IsNullOrEmpty(sp.Dvt) || sp.Dvt.Equals(""))
+                sp.Dvt = "Cái";
+            sp.NgayDangSP = DateTime.Now;
+            sp.NdSP = String.IsNullOrEmpty(sp.NdSP) ? null : sp.NdSP.Replace("\n", "").Replace("\r", "");
+            sp.TomTat = String.IsNullOrEmpty(sp.TomTat) ? null : sp.TomTat.Replace("\n", "").Replace("\r", "");
+            sp.LuotMua = 0;
+            sp.LuotXem = 0;
+            db.SANPHAMs.Add(sp);
+            try
+            {
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-
-            ViewBag.AnhBia = new SelectList(db.ANHs, "ID", "Url", sANPHAM.AnhBia);
-            ViewBag.MaLoai = new SelectList(db.LOAISPs, "ID", "LoaiSP1", sANPHAM.MaLoai);
-            return View(sANPHAM);
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return View("Create");
+            }
+            if (tva != null && tva != "")
+            {
+                string[] tva2 = tva.Split(',');
+                foreach (string t in tva2)
+                {
+                    int idAnh = Convert.ToInt32(t);
+                    db.Database.ExecuteSqlCommand("Insert into THUVIENANHSP (MaAnh,MaSP) values (" + idAnh + "," + sp.ID + ")");
+                }
+            }
+            if (preview)
+                return Preview(sp.ID);
+            return Json(new { success = true });
         }
-
-        // GET: Admin/SanPhams/Edit/5
-        public ActionResult Edit(int? id)
+        //preview Món
+        private ActionResult Preview(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            SANPHAM sANPHAM = db.SANPHAMs.Find(id);
-            if (sANPHAM == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.AnhBia = new SelectList(db.ANHs, "ID", "Url", sANPHAM.AnhBia);
-            ViewBag.MaLoai = new SelectList(db.LOAISPs, "ID", "LoaiSP1", sANPHAM.MaLoai);
-            return View(sANPHAM);
+            GroceryStoreDB db = new GroceryStoreDB();
+            Trace.WriteLine(id);
+            var sanPhams = db.SANPHAMs;
+            ViewBag.sanPham = sanPhams.Where(x => x.ID == id).FirstOrDefault();
+            Trace.WriteLine(sanPhams.Where(x => x.ID == id).FirstOrDefault());
+            ViewBag.khuyenMai = (from sp in sanPhams where sp.GiaKM < sp.GiaBan && sp.DangSP select sp).Take(4);
+            Trace.WriteLine((from sp in sanPhams where sp.GiaKM < sp.GiaBan && sp.DangSP select sp).Take(4));
+            int loaisp = ViewBag.sanPham.MaLoai;
+            ViewBag.CungLoai = (from sp in sanPhams where sp.MaLoai == loaisp && sp.DangSP select sp).Take(4);
+            Trace.WriteLine((from sp in sanPhams where sp.MaLoai == loaisp && sp.DangSP select sp).Take(4));
+            return View("~/Views/Products/Product.cshtml");
         }
-
-        // POST: Admin/SanPhams/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,MaLoai,TenSP,TenDuongDan,TomTat,NgayDangSP,GiaBan,GiaKM,Dvt,SoLuong,AnhBia,NdSP,LuotXem,LuotMua,DangSP")] SANPHAM sANPHAM)
+        public ActionResult Edit(int id)
         {
-            if (ModelState.IsValid)
+            // KHÔNG DÙNG ĐƯỢC MODEL LIST
+            /*SANPHAM sanPhams = db.SANPHAMs.Where(x => x.ID == id).First();
+            return View(sanPhams);*/
+            var sanPhams = db.SANPHAMs;
+            ViewBag.SANPHAM = (from sp in sanPhams where sp.ID == id select sp).ToList();
+            return View();
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Edit(SANPHAM sp, string tva, bool preview = false)
+        {
+            if (!ModelState.IsValid)
             {
-                db.Entry(sANPHAM).State = EntityState.Modified;
+                ViewBag.SANPHAM = new List<SANPHAM>();
+                // Lấy danh sách lỗi từ ModelState
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                              .Select(e => e.ErrorMessage)
+                                              .ToList();
+
+                // Trả về đối tượng JSON chứa thông tin lỗi
+                return Json(new { success = false, errors });
+            }
+            SANPHAM sp2 = db.SANPHAMs.Where(x => x.ID == sp.ID).First();
+            sp2.MaLoai = sp.MaLoai;
+            sp2.TenSP = sp.TenSP;
+            sp2.TenDuongDan = sp.TenDuongDan;
+            sp2.GiaBan = sp.GiaBan;
+            sp2.GiaKM = sp.GiaKM;
+            sp2.Dvt = sp.Dvt;
+            sp2.SoLuong = sp.SoLuong;
+            sp2.AnhBia = sp.AnhBia;
+            sp2.DangSP = sp.DangSP;
+            sp2.NdSP = String.IsNullOrEmpty(sp.NdSP) ? null : sp.NdSP.Replace("\n", "").Replace("\r", "");
+            sp2.TomTat = String.IsNullOrEmpty(sp.TomTat) ? null : sp.TomTat.Replace("\n", "").Replace("\r", "");
+            try
+            {
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-            ViewBag.AnhBia = new SelectList(db.ANHs, "ID", "Url", sANPHAM.AnhBia);
-            ViewBag.MaLoai = new SelectList(db.LOAISPs, "ID", "LoaiSP1", sANPHAM.MaLoai);
-            return View(sANPHAM);
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            // xóa thư viện ảnh
+            db.Database.ExecuteSqlCommand("delete THUVIENANHSP where MaSP = " + sp.ID);
+            // thêm lại thư viện ảnh
+            if (tva != null && tva != "")
+            {
+                string[] tva2 = tva.Split(',');
+                foreach (string t in tva2)
+                {
+                    int idAnh = Convert.ToInt32(t);
+                    db.Database.ExecuteSqlCommand("Insert into THUVIENANHSP (MaAnh,MaSP) values (" + idAnh + "," + sp2.ID + ")");
+                }
+            }
+            if (preview)
+                return Preview(sp.ID);
+            return Json(new { success = true });
         }
 
-        // GET: Admin/SanPhams/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
+            SANPHAM sp = db.SANPHAMs.Where(x => x.ID == id).First();
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                db.SANPHAMs.Remove(sp);
+                db.SaveChanges();
+                var maxId = db.SANPHAMs.Max(p => (int?)p.ID) ?? 0;
+                // Đặt lại giá trị IDENTITY sử dụng giá trị maxId
+                db.Database.ExecuteSqlCommand("DBCC CHECKIDENT('SANPHAM', RESEED, @maxId)", new SqlParameter("maxId", maxId));
             }
-            SANPHAM sANPHAM = db.SANPHAMs.Find(id);
-            if (sANPHAM == null)
+            catch (Exception e)
             {
-                return HttpNotFound();
+                Console.WriteLine(e.Message);
             }
-            return View(sANPHAM);
+            return Redirect(Url.Action("Index", "SanPhams"));
         }
-
-        // POST: Admin/SanPhams/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        // Search Product
+        public ActionResult Search_Product(string search, int? page)
         {
-            SANPHAM sANPHAM = db.SANPHAMs.Find(id);
-            db.SANPHAMs.Remove(sANPHAM);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            int pageNum = (page ?? 1);
+            List<SANPHAM> sanPhams = db.SANPHAMs.Where(x => DbFunctions.Like(x.TenSP, "%" + search + "%")).ToList();
+            ViewBag.search = search;
+            return View("Index", sanPhams.ToPagedList(pageNum, 10));
         }
 
         protected override void Dispose(bool disposing)

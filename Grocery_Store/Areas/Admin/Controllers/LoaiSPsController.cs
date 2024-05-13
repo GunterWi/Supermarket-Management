@@ -12,7 +12,7 @@ using Grocery_Store.Models;
 
 namespace Grocery_Store.Areas.Admin.Controllers
 {
-    [CustomAuthor(Roles = "admin")]
+    [CustomAuthor(Roles = "Admin")]
     public class LoaiSPsController : Controller
     {
         private GroceryStoreDB db = new GroceryStoreDB();
