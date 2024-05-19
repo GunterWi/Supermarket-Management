@@ -106,11 +106,16 @@ namespace Grocery_Store.Areas.Admin.Controllers
             }
             try
             {
+                db.Configuration.ValidateOnSaveEnabled = false;
                 db.SaveChanges();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                db.Configuration.ValidateOnSaveEnabled = true;
             }
             return RedirectToAction("UserManagement");
         }
@@ -118,6 +123,7 @@ namespace Grocery_Store.Areas.Admin.Controllers
         public ActionResult UserProfile(int id)
         {
             TAIKHOAN taiKhoan = db.TAIKHOANs.Where(x => x.ID == id).First();
+            ViewBag.ActiveTab = "activity";
             return View(taiKhoan);
         }
         // sửa thông tin
@@ -128,37 +134,36 @@ namespace Grocery_Store.Areas.Admin.Controllers
             // tài khoản admin sẽ không được phép ai thay đổi trừ chính nó
             if (taiKhoan1.TenTK == "admin")
                 return View(taiKhoan1);
-            bool luu = true;
-            List<TAIKHOAN> kt = db.TAIKHOANs.Where(x => x.Email == taiKhoan.Email && x.ID != taiKhoan.ID).ToList();
-            if (kt.Count > 0)
-            {
-                ModelState["Email"].Errors.Add("Email đã tồn tại");
-                luu = false;
-            }
-            kt = db.TAIKHOANs.Where(x => x.SDT == taiKhoan.SDT && x.ID != taiKhoan.ID).ToList();
-            if (kt.Count > 0)
-            {
-                ModelState["SDT"].Errors.Add("Số điện thoại đã tồn tại");
-                luu = false;
-            }
-
-            if (!luu)
-                return View(taiKhoan1);
             taiKhoan1.HoTen = taiKhoan.HoTen;
             taiKhoan1.Email = taiKhoan.Email;
             taiKhoan1.SDT = taiKhoan.SDT;
             taiKhoan1.GhiChu = taiKhoan.GhiChu;
+            //debug
+            taiKhoan1.XnMK = taiKhoan1.MatKhau;
+            if (CapLaiMK)
+            {
+                taiKhoan1.MatKhau = Func.MD5Hash("1111");
+                taiKhoan1.XnMK = Func.MD5Hash("1111");
+            }
             try
             {
-                if (CapLaiMK)
-                    taiKhoan1.MatKhau = Func.MD5Hash("1111");
                 db.SaveChanges();
+                ViewBag.ActiveTab = "activity";
+                return View(taiKhoan1);
             }
-            catch (Exception e)
+            catch (DbEntityValidationException ex)
             {
-                Console.WriteLine(e.Message);
+                foreach (var validationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Trace.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                    }
+                }
+                ViewBag.ActiveTab = "settings";
+                TAIKHOAN temp = db.TAIKHOANs.Where(x => x.ID == taiKhoan.ID).First();
+                return View(temp);
             }
-            return View(taiKhoan1);
         }
         // thông tin admin (tài khoản admin cá nhân)
         public ActionResult ProfileAdmin()

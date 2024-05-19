@@ -1,5 +1,13 @@
 ﻿@using Grocery_Store.Models
-@{ User user = (User)HttpContext.Current.Session["Account"]; }
+@{ 
+    User user = (User)HttpContext.Current.Session["Account"];
+    using (GroceryStoreDB db = new GroceryStoreDB())
+    {
+        var avatar = db.ANHs.FirstOrDefault(av => av.ID == user.Account.Avatar);
+
+        ViewBag.Avatar = avatar != null ? avatar.Url : "/Asset/Image/profile/default.png";
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +22,7 @@
     <!--Admin css-->
     @Styles.Render("~/Admin/css")
     @RenderSection("css", required: false)
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -56,7 +65,7 @@
                         <a href="#" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <img src="/Asset/Admin/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         Brad Diesel
@@ -72,7 +81,7 @@
                         <a href="#" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <img src="/Asset/Admin/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         John Pierce
@@ -88,7 +97,7 @@
                         <a href="#" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <img src="/Asset/Admin/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         Nora Silvester
@@ -155,6 +164,9 @@
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="@ViewBag.Avatar" class="img-circle elevation-2" alt="User Image">
+                    </div>
                     <div class="info">
                         <a href="@Url.Action("ProfileAdmin","TaiKhoans")" class="d-block">@user.Account.HoTen</a>
                     </div>
@@ -235,12 +247,6 @@
                                         <p>Danh sách ảnh</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Media_Add","Anhs")" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Thêm ảnh</p>
-                                    </a>
-                                </li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -284,7 +290,7 @@
                                 <li class="nav-item">
                                     <a href="@Url.Action("OrderManagement","DonHangs")" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Thêm đơn hàng</p>
+                                        <p>Thống kê đơn hàng</p>
                                     </a>
                                 </li>
                             </ul>

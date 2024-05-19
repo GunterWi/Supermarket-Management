@@ -24,35 +24,35 @@ namespace Grocery_Store.Areas.Admin.Data
         {
             using (GroceryStoreDB db = new GroceryStoreDB())
             {
-                var entity=false;
+                var change = false;
+                var entity = validationContext.ObjectInstance as TAIKHOAN;
                 if (value != null)
                 {
                     if (validationContext.DisplayName.Equals("TenTK"))
                     {
-                        entity = db.TAIKHOANs.Any(e => e.TenTK == value.ToString());
+                        change = db.TAIKHOANs.Any(e => e.TenTK == value.ToString() && e.ID != entity.ID);
                     }
                     if (validationContext.DisplayName.Equals("Email"))
                     {
-                        entity = db.TAIKHOANs.Any(e => e.Email == value.ToString());
+                        change = db.TAIKHOANs.Any(e => e.Email == value.ToString() && e.ID != entity.ID);
                     }
                     if (validationContext.DisplayName.Equals("SDT"))
                     {
-                        entity = db.TAIKHOANs.Any(e => e.SDT == value.ToString());
+                        change = db.TAIKHOANs.Any(e => e.SDT == value.ToString() && e.ID != entity.ID);
                     }
-                    if (entity)
+                    if (change)
                     {
                         if (_propertyName.Equals("TenTK"))
                         {
-                            return new ValidationResult($"Tên tài khoản đã tồn tài");
+                            return new ValidationResult($"Tên tài khoản đã tồn tại");
                         }
                         return new ValidationResult($"{_propertyName} đã tồn tại");
-
                     }
                 }
-                
             }
             return ValidationResult.Success;
         }
+
     }
 
 }

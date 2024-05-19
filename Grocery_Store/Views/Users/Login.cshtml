@@ -42,8 +42,8 @@
                         @Html.TextBoxFor(m => m.TenTK, new { placeholder = "Tên tài khoản", required = "" })
                         @Html.ValidationMessageFor(m => m.TenTK, "", new { @class = "text-danger" })
                         @Html.PasswordFor(m => m.MatKhau, new { placeholder = "Mật khẩu", required = "" })
-                        @Html.Password("xnMatKhau", "", new { placeholder = "Xác Nhận Mật khẩu", required = "" })
-                        <span class="text-danger">@ViewData["LoiMK"] </span>
+                        @Html.PasswordFor(m => m.XnMK, new { @class = "form-control", placeholder = "Xác nhận mật khẩu" })
+                        @Html.ValidationMessageFor(m => m.XnMK, "", new { @class = "text-danger" })
                         <div class="form-group">
                             @Html.RadioButtonFor(m => m.GioiTinh, true, new { @class = "form-inline ml-sm-2", @checked = "" })
                             @Html.LabelFor(m => m.GioiTinh, "Nam", new { @class = "form-inline ml-sm-2" })

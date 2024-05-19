@@ -2564,10 +2564,8 @@
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboards\Index.cshtml" />
     <Content Include="Areas\Admin\Views\DanhMucs\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Donhangs\Index.cshtml" />
     <Content Include="Areas\Admin\Views\LoaiSPs\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SanPhams\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Anhs\Index.cshtml" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <Content Include="Areas\Admin\Views\SanPhams\Create.cshtml" />
@@ -2582,6 +2580,11 @@
     <Content Include="Areas\Admin\Views\TaiKhoans\UserProfile.cshtml" />
     <Content Include="Areas\Admin\Views\TaiKhoans\UserManagement.cshtml" />
     <Content Include="Areas\Admin\Views\TaiKhoans\ProfileAdmin.cshtml" />
+    <Content Include="Areas\Admin\Views\Donhangs\OrderManagement.cshtml" />
+    <Content Include="Areas\Admin\Views\Donhangs\DetailOrder.cshtml" />
+    <Content Include="Areas\Admin\Views\Anhs\Media.cshtml" />
+    <Content Include="Areas\Admin\Views\Anhs\Media_Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Anhs\Media_Images.cshtml" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />

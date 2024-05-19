@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -16,122 +17,54 @@ namespace Grocery_Store.Areas.Admin.Controllers
     {
         private GroceryStoreDB db = new GroceryStoreDB();
 
-        // GET: Admin/Donhangs
-        public ActionResult Index()
+        // Quản lý đơn hàng
+        public ActionResult OrderManagement()
         {
-            var dONHANGs = db.DONHANGs.Include(d => d.PHUONGXA).Include(d => d.QUANHUYEN).Include(d => d.TAIKHOAN).Include(d => d.TINHTHANH);
-            return View(dONHANGs.ToList());
+            List<DONHANG> donHangs = db.DONHANGs.ToList();
+            return View(donHangs);
         }
-
-        // GET: Admin/Donhangs/Details/5
-        public ActionResult Details(int? id)
+        // Cài đặt trạng thái vận chuyển
+        public ActionResult SettingOrder(int id, int type, string DvVanChuyen, string MaVanChuyen, int? PhiShip, string GhiChu)
         {
-            if (id == null)
+            // type: 1 hủy đơn, 2 vận chuyển, 3 chuyển trạng thái giao thành công, 4 ghi chú
+            DONHANG donHang = db.DONHANGs.Where(x => x.ID == id).First();
+            if (type == 1)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                donHang.ThanhCong = false;
+                donHang.GhiChuShop = GhiChu;
             }
-            DONHANG dONHANG = db.DONHANGs.Find(id);
-            if (dONHANG == null)
+            else if (type == 2)
             {
-                return HttpNotFound();
+                donHang.DvVanChuyen = DvVanChuyen;
+                donHang.MaVanChuyen = MaVanChuyen;
+                donHang.PhiShip = PhiShip;
             }
-            return View(dONHANG);
-        }
-
-        // GET: Admin/Donhangs/Create
-        public ActionResult Create()
-        {
-            ViewBag.MaPhuong = new SelectList(db.PHUONGXAs, "ID", "Name");
-            ViewBag.MaQuan = new SelectList(db.QUANHUYENs, "ID", "Name");
-            ViewBag.KhachHang = new SelectList(db.TAIKHOANs, "ID", "HoTen");
-            ViewBag.MaTP = new SelectList(db.TINHTHANHs, "ID", "Name");
-            return View();
-        }
-
-        // POST: Admin/Donhangs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,KhachHang,DcGiaoHang,MaPhuong,MaQuan,MaTP,XuatHD,NgayDatHang,NgayGiaoHang,ThanhCong,DvVanChuyen,MaVanChuyen,PhiShip,GhiChuKhach,GhiChuShop")] DONHANG dONHANG)
-        {
-            if (ModelState.IsValid)
+            else if (type == 3)
             {
-                db.DONHANGs.Add(dONHANG);
+                donHang.NgayGiaoHang = DateTime.Now;
+                donHang.ThanhCong = true;
+            }
+            else if (type == 4)
+            {
+                donHang.GhiChuShop = GhiChu;
+            }
+            try
+            {
                 db.SaveChanges();
-                return RedirectToAction("Index");
+            }
+            catch (DbEntityValidationException e)
+            {
+                Console.WriteLine(e.EntityValidationErrors);
             }
 
-            ViewBag.MaPhuong = new SelectList(db.PHUONGXAs, "ID", "Name", dONHANG.MaPhuong);
-            ViewBag.MaQuan = new SelectList(db.QUANHUYENs, "ID", "Name", dONHANG.MaQuan);
-            ViewBag.KhachHang = new SelectList(db.TAIKHOANs, "ID", "HoTen", dONHANG.KhachHang);
-            ViewBag.MaTP = new SelectList(db.TINHTHANHs, "ID", "Name", dONHANG.MaTP);
-            return View(dONHANG);
+            return RedirectToAction("OrderManagement");
         }
-
-        // GET: Admin/Donhangs/Edit/5
-        public ActionResult Edit(int? id)
+        // Chi tiết đơn hàng
+        public ActionResult DetailOrder(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DONHANG dONHANG = db.DONHANGs.Find(id);
-            if (dONHANG == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.MaPhuong = new SelectList(db.PHUONGXAs, "ID", "Name", dONHANG.MaPhuong);
-            ViewBag.MaQuan = new SelectList(db.QUANHUYENs, "ID", "Name", dONHANG.MaQuan);
-            ViewBag.KhachHang = new SelectList(db.TAIKHOANs, "ID", "HoTen", dONHANG.KhachHang);
-            ViewBag.MaTP = new SelectList(db.TINHTHANHs, "ID", "Name", dONHANG.MaTP);
-            return View(dONHANG);
-        }
-
-        // POST: Admin/Donhangs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,KhachHang,DcGiaoHang,MaPhuong,MaQuan,MaTP,XuatHD,NgayDatHang,NgayGiaoHang,ThanhCong,DvVanChuyen,MaVanChuyen,PhiShip,GhiChuKhach,GhiChuShop")] DONHANG dONHANG)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(dONHANG).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.MaPhuong = new SelectList(db.PHUONGXAs, "ID", "Name", dONHANG.MaPhuong);
-            ViewBag.MaQuan = new SelectList(db.QUANHUYENs, "ID", "Name", dONHANG.MaQuan);
-            ViewBag.KhachHang = new SelectList(db.TAIKHOANs, "ID", "HoTen", dONHANG.KhachHang);
-            ViewBag.MaTP = new SelectList(db.TINHTHANHs, "ID", "Name", dONHANG.MaTP);
-            return View(dONHANG);
-        }
-
-        // GET: Admin/Donhangs/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DONHANG dONHANG = db.DONHANGs.Find(id);
-            if (dONHANG == null)
-            {
-                return HttpNotFound();
-            }
-            return View(dONHANG);
-        }
-
-        // POST: Admin/Donhangs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            DONHANG dONHANG = db.DONHANGs.Find(id);
-            db.DONHANGs.Remove(dONHANG);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            List<CHITIETDH> chiTietDHs = db.CHITIETDHs.Where(x => x.MaDH == id).ToList();
+            ViewBag.donHang = db.DONHANGs.Where(x => x.ID == id).First();
+            return View(chiTietDHs);
         }
 
         protected override void Dispose(bool disposing)
