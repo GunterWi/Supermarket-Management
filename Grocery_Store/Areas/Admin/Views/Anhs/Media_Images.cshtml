@@ -84,7 +84,11 @@
                 @foreach (ANH anh in ViewBag.anhs)
                 {
                     <li class="ui-widget-content ui-corner-tr">
-                        @{ string tenAnh = anh.Url.Split('/')[anh.Url.Split('/').Length - 1];}
+                        @{ string tenAnh = anh.Url.Split('/')[anh.Url.Split('/').Length - 1];
+                            if (tenAnh.Length > 10){
+                                tenAnh = tenAnh.Substring(0, 10);
+                            }
+                        }
                         <p class="ui-widget-header overflow-hidden">@tenAnh</p>
                         <img src="@anh.Url" alt="@tenAnh" width="96" height="72" id_anh="@anh.ID">
                         <span href="@anh.Url" link="@anh.Url" style="cursor: pointer" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</span>

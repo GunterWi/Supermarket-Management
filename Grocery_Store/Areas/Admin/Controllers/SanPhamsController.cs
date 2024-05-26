@@ -77,7 +77,7 @@ namespace Grocery_Store.Areas.Admin.Controllers
                 return Preview(sp.ID);
             return Json(new { success = true });
         }
-        //preview Món
+        //preview Sản phẩm
         private ActionResult Preview(int id)
         {
             GroceryStoreDB db = new GroceryStoreDB();

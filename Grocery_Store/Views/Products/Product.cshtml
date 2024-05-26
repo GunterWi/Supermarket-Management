@@ -115,24 +115,32 @@
         <!--category-tab-->
         <div class="col-sm-12">
             <ul class="nav nav-tabs ul">
-                <li><a href="#details" data-toggle="tab"> món ăn đang khuyến mãi</a></li>
-                <li><a href="#companyprofile" data-toggle="tab">món ăn cùng loại</a></li>
+                <li class="active" ><a href="#details" data-toggle="tab"> sản phẩm đang khuyến mãi</a></li>
+                <li><a href="#companyprofile" data-toggle="tab">sản phẩm cùng loại</a></li>
                 <li><a href="#reviews" data-toggle="tab">Đánh giá (@chiTietDHs.Count)</a></li>
                 <li><a href="#comment" data-toggle="tab">Bình luận (@sanPham.BINHLUANs.Count)</a></li>
             </ul>
         </div>
         <div class="tab-content">
-            <div class="tab-pane fade" id="details">
+            <div class="tab-pane active" id="details">
                 @foreach (SANPHAM sp in ViewBag.khuyenMai)
                 {
+                    bool isKM = sp.GiaKM != null ? true : false;
                     int gia = sp.GiaKM ?? sp.GiaBan;
                     <div class="col-sm-3">
                         <div class="product-image-wrapper">
                             <div class="single-products">
                                 <div class="productinfo text-center">
-                                    <img src="@sp.ANH.Url" alt="" />
-                                    <h2>@gia.ToString("N0") ₫</h2>
-                                    <p>@sp.TenSP ₫</p>
+                                    <img src="@sp.ANH.Url" alt="" height="200px"/>
+                                    @if (isKM)
+                                    {
+                                        <h5><del>@sp.GiaBan.ToString("N0") ₫</del></h5>
+                                        <h2>@(sp.GiaKM?.ToString("N0") ?? "0") ₫</h2>
+                                    }
+                                    else
+                                    {
+                                        <h2>@sp.GiaBan.ToString("N0") ₫</h2>
+                                    }                                    <p>@sp.TenSP ₫</p>
                                     <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                                 </div>
                             </div>
@@ -144,14 +152,22 @@
             <div class="tab-pane fade" id="companyprofile">
                 @foreach (SANPHAM sp in ViewBag.CungLoai)
                 {
+                    bool isKM = sp.GiaKM != null ? true : false;
                     int gia = sp.GiaKM ?? sp.GiaBan;
                     <div class="col-sm-3">
                         <div class="product-image-wrapper">
                             <div class="single-products">
                                 <div class="productinfo text-center">
                                     <img src="@sp.ANH.Url" alt="" height="200px" />
-                                    <h2>@gia.ToString("N0") ₫</h2>
-                                    <p>@sp.TenSP ₫</p>
+                                    @if (isKM)
+                                    {
+                                        <h5><del>@sp.GiaBan.ToString("N0") ₫</del></h5>
+                                        <h2>@(sp.GiaKM?.ToString("N0") ?? "0") ₫</h2>
+                                    }
+                                    else
+                                    {
+                                        <h2>@sp.GiaBan.ToString("N0") ₫</h2>
+                                    }                                            <p>@sp.TenSP ₫</p>
                                     <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                                 </div>
                             </div>

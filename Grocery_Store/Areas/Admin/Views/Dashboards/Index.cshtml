@@ -148,8 +148,8 @@
     @foreach (var item in ViewBag.DonHangTrongTuan)
     {
         <script>
-            datetimeForDonus.push('@item.Date.ToString("dd/MM/yyyy")');
-            dataForDonus.push(@item.TotalAmount);
+            datetimeForDonus.push('@item.NgayDatHang.ToString("dd/MM/yyyy")');
+            dataForDonus.push(@item.TongTien);
         </script>
     }
     @foreach (IGrouping<int, DONHANG> donHangs in ViewBag.DonHangTheoThang)

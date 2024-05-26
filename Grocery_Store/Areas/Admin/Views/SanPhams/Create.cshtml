@@ -194,7 +194,7 @@
                                 <button type="button" class="btn btn-outline-secondary btn-block" data-toggle="modal" data-target="#addAnhBia"><i class="fas fa-photo-video"></i> Thêm ảnh bìa</button>
                                 <div class="form-row">
                                     <div class="col">
-                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ThuVienAnh">Chọn thư viện ảnh</button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ThuVienAnh">Chọn TVA</button>
                                     </div>
                                     <div class="form-inline">
                                         @Html.LabelFor(m => m.Dvt, "Nhập đơn vị tính")
@@ -421,6 +421,9 @@
                     success: function (response) {
                         if (response.success) {
                             toastr.success('Tạo mới thành công');
+                             setTimeout(function() {
+                                window.location.href = '@Url.Action("Index", "SanPhams")';
+                             }, 2000);
                         } else {
                             $.each(response.errors, function (index, error) {
                                 toastr.error(error);

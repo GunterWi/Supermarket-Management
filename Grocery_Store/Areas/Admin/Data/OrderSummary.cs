@@ -5,9 +5,11 @@ using System.Web;
 
 namespace Grocery_Store.Areas.Admin.Data
 {
+    using System;
+    
     public class OrderSummary
     {
-        public DateTime Date { get; set; }
-        public int TotalAmount { get; set; }
+        public System.DateTime NgayDatHang { get; set; }
+        public int TongTien { get; set; }
     }
 }

@@ -14,7 +14,7 @@
         @foreach (SANPHAM sp in Model)
         {
             bool isKM = sp.GiaKM != null ? true : false;
-            int gia = sp.GiaKM ?? sp.GiaBan;
+            int gia = sp.GiaKM ?? sp.GiaBan; /*khỏi dùng if else*/
             if (ii % 3 == 0)
             {
                 @Html.Raw("<div class='row'>")
@@ -28,6 +28,10 @@
                             {
                                 <h5><del>@sp.GiaBan.ToString("N0") ₫</del></h5>
                                 <h2>@(sp.GiaKM?.ToString("N0") ?? "0") ₫</h2>
+                            }
+                            else
+                            {
+                                <h2>@sp.GiaBan.ToString("N0") ₫</h2>
                             }
                             <p>@sp.TenSP</p>
                             <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>

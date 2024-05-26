@@ -20,7 +20,7 @@
                         <div class="carousel-inner">
                             <div class="item active">
                                 <div class="col-sm-6">
-                                    <h1><span>Vu Ngu</span>-Mart</h1>
+                                    <h1><span>VN</span>-Mart</h1>
                                     <h2>Tuần lễ thương hiệu - Downy</h2>
                                     <p>
                                         Tuần lễ Downy tại WinMart: Mua 3L tặng 2.65KG hoặc giảm 30K! Hương thơm quyến rũ, chào đón xuân sang. 11/4 - 21/4, quà tặng vòng quay may mắn!
@@ -33,7 +33,7 @@
                             </div>
                             <div class="item">
                                 <div class="col-sm-6">
-                                    <h1><span>Vu Ngu</span>-Mart</h1>
+                                    <h1><span>VN</span>-Mart</h1>
                                     <h2>Ưu đãi đặc quyền hội viên</h2>
                                     <p>
                                         Khám phá ưu đãi đến 20% tại WinMart! Mua sắm MEAT Deli & WinEco tiết kiệm, tận hưởng giá sốc hàng tuần. Đăng ký thành viên Win ngay!
@@ -47,7 +47,7 @@
 
                             <div class="item">
                                 <div class="col-sm-6">
-                                    <h1><span>Vu Ngu</span>-Mart</h1>
+                                    <h1><span>VN</span>-Mart</h1>
                                     <h2>Sữa tươi hút chân không vỗ về vị giác</h2>
                                     <p>
                                         Sữa Vinamilk Green Farm: Dinh dưỡng cao cấp, vị ngon tự nhiên. Cảm nhận sức khỏe mỗi ngày! Mua ngay tại VuNgu-Mart.
@@ -78,7 +78,7 @@
 <div class="col-sm-9 padding-right">
     <div class="features_items">
         <!--features_items-->
-        <h2 class="title text-center">MÓN CỦA QUÁN</h2>
+        <h2 class="title text-center">SẢN PHẨM CỦA SHOP</h2>
         @{ var ii = 0;}
         @foreach (SANPHAM sp in ViewBag.sanPhams)
         {
@@ -86,19 +86,28 @@
             {
                 @Html.Raw("<div class='row'>")
             }
+            bool isKM = sp.GiaKM != null ? true : false;
             int gia = sp.GiaKM ?? sp.GiaBan;
             <div class="col-sm-4">
                 <div class="product-image-wrapper">
                     <div class="single-products">
                         <div class="productinfo text-center">
                             <img src="@sp.ANH.Url" alt="@sp.TenSP" height="200px" />
-                            <h2>@gia.ToString("N0") ₫</h2>
+                            @if (isKM)
+                            {
+                                <h5><del>@sp.GiaBan.ToString("N0") ₫</del></h5>
+                                <h2>@(sp.GiaKM?.ToString("N0") ?? "0") ₫</h2>
+                            }
+                            else
+                            {
+                                <h2>@sp.GiaBan.ToString("N0") ₫</h2>
+                            }
                             <p>@sp.TenSP</p>
                             <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                         </div>
                         <div class="product-overlay">
                             <div class="overlay-content">
-                                <h2>@gia.ToString("N0") ₫</h2>
+                                <h2>@gia.ToString("N0") </h2>
                                 <p>@sp.TenSP</p>
                                 <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                             </div>
@@ -136,13 +145,22 @@
                     @{ IEnumerable<SANPHAM> monAn = (from sp in lsp.SANPHAMs where sp.DangSP == true orderby sp.LuotXem descending select sp).Take(6);}
                     @foreach (SANPHAM sp in monAn)
                     {
+                        bool isKM = sp.GiaKM != null ? true : false;
                         int gia = sp.GiaKM ?? sp.GiaBan;
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
                                         <img src="@sp.ANH.Url" alt="@sp.TenSP" height="200px" />
-                                        <h2>@gia.ToString("N0") ₫</h2>
+                                        @if (isKM)
+                                        {
+                                            <h5><del>@sp.GiaBan.ToString("N0") ₫</del></h5>
+                                            <h2>@(sp.GiaKM?.ToString("N0") ?? "0") ₫</h2>
+                                        }
+                                        else
+                                        {
+                                            <h2>@sp.GiaBan.ToString("N0") ₫</h2>
+                                        }
                                         <p>@sp.TenSP</p>
                                         <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
                                     </div>
@@ -177,13 +195,22 @@
                             @Html.Raw("<div class=\"item\">")
                         }
                     }
+                    bool isKM = sp.GiaKM != null ? true : false;
                     int gia = sp.GiaKM ?? sp.GiaBan;
                     <div class="col-sm-4">
                         <div class="product-image-wrapper">
                             <div class="single-products">
                                 <div class="productinfo text-center">
                                     <img src="@sp.ANH.Url" alt="" height="200px" />
-                                    <h2>@gia.ToString("N0") ₫</h2>
+                                    @if (isKM)
+                                    {
+                                        <h5><del>@sp.GiaBan.ToString("N0") ₫</del></h5>
+                                        <h2>@(sp.GiaKM?.ToString("N0") ?? "0") ₫</h2>
+                                    }
+                                    else
+                                    {
+                                        <h2>@sp.GiaBan.ToString("N0") ₫</h2>
+                                    }
                                     <p>@sp.TenSP</p>
                                     <a href="@Url.Action("Product","Products",routeValues: new{id = sp.TenDuongDan,})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                 </div>

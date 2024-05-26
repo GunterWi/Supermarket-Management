@@ -84,7 +84,7 @@ function increaseGioHang(id_sp) {
     let gioHang = getGioHang()
     let coMA = false
     if (gioHang !== null) {
-        // thêm số lượng món ăn
+        // thêm số lượng sản phẩm
         gioHang.forEach(function (item, index) {
             if (item.id_sp == id_sp) {
                 coMA = true
@@ -132,7 +132,7 @@ function reductionGioHang(id_sp) {
 function dropGioHang(id_sp, callback) {
     Swal.fire({
         title: "Bạn có chắc chắn",
-        text: "Xóa món ăn này khỏi giỏ hàng",
+        text: "Xóa sản phẩm này khỏi giỏ hàng",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: 'Đồng ý',
@@ -150,12 +150,12 @@ function dropGioHang(id_sp, callback) {
                 });
                 if (found) {
                     setGioHang(gioHang);
-                    console.log("món ăn đã được xóa, gọi callback"); // Log để kiểm tra
+                    console.log("sản phẩm đã được xóa, gọi callback"); // Log để kiểm tra
                     callback(); // Gọi callback khi xác nhận xóa
                 } else {
                     Swal.fire({
                         title: 'Lỗi',
-                        text: 'món ăn không tồn tại trong giỏ hàng.',
+                        text: 'sản phẩm không tồn tại trong giỏ hàng.',
                         icon: 'error',
                         confirmButtonText: 'Đóng',
                     });
