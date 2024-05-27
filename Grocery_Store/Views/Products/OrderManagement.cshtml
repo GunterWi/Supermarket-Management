@@ -119,22 +119,25 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Tên sản phẩm</th>
-                <th>Số lượng sản phẩm: </th>
-                <th>Tổng giá thành: </th>
-                <th>Đánh giá: </th>
+                <th class="text-center">Tên sản phẩm</th>
+                <th class="text-center">Số lượng sản phẩm</th>
+                <th class="text-center">Giá sản phẩm</th>
+                <th class="text-center">Tổng giá thành: </th>
+                <th class="text-center">Đánh giá: </th>
             </tr>
         </thead>
         <tbody>
             @foreach (CHITIETDH chiTietDH in Model.CHITIETDHs)
             {
+                var tong = chiTietDH.GiaBan * chiTietDH.SoLuong;
                 <tr>
-                    <td>@chiTietDH.SANPHAM.TenSP</td>
-                    <td>@chiTietDH.SoLuong</td>
-                    <td>@chiTietDH.GiaBan</td>
+                    <td class="text-center">@chiTietDH.SANPHAM.TenSP</td>
+                    <td class="text-center">@chiTietDH.SoLuong</td>
+                    <td class="text-center">@chiTietDH.GiaBan</td>
+                    <td class="text-center">@tong</td>
                     @if (chiTietDH.DanhGia != null)
                     {
-                        <td style="color:yellow">
+                        <td class="text-center" style="color: orange" >
                             @for (int i = 1; i <= 5; i++)
                             {
                                 if (i <= chiTietDH.DanhGia)
@@ -150,7 +153,7 @@
                     }
                     else if (Model.ThanhCong ?? false)
                     {
-                        <td class="sao" style="color:yellow; cursor: pointer">
+                        <td class="sao text-center" style="color: orange; cursor: pointer">
                             <i class="far fa-star" star="1" onclick="danhGia(@chiTietDH.MaSP,@chiTietDH.MaDH,1)"></i>
                             <i class="far fa-star" star="2" onclick="danhGia(@chiTietDH.MaSP,@chiTietDH.MaDH,2)"></i>
                             <i class="far fa-star" star="3" onclick="danhGia(@chiTietDH.MaSP,@chiTietDH.MaDH,3)"></i>
@@ -181,11 +184,11 @@
                 con.removeClass("fas")
                 con.addClass("far")
         })
-        function danhGia(maMA, maDH, sao) {
+        function danhGia(MaSP, maDH, sao) {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("OrderManagement", "Products")',
-                data: JSON.stringify({ maMA: maMA, maDH: maDH, sao: sao }),
+                data: JSON.stringify({ MaSP: MaSP, maDH: maDH, sao: sao }),
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {

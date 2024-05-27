@@ -144,7 +144,7 @@
         var dataForBar = [];
         var datetimeForDonus = [];
         var dataForDonus = [];
-        var index = 0;</script>
+    </script>
     @foreach (var item in ViewBag.DonHangTrongTuan)
     {
         <script>
@@ -155,12 +155,11 @@
     @foreach (IGrouping<int, DONHANG> donHangs in ViewBag.DonHangTheoThang)
     {
         <script>
-            datetimeForBar.push([index, '@donHangs.Key']);
-            dataForBar.push([index, @donHangs.Count()]);
-            index++;
+            dataForBar.push(['@donHangs.Key', @donHangs.Count()]);
         </script>
     }
-    <script>$(document).ready(function () {
+    <script>
+        $(document).ready(function () {
             var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
             var donutData = {
                 labels: datetimeForDonus,
@@ -180,8 +179,10 @@
                 data: donutData,
                 options: donutOptions
             })
-        })</script>
-    <script>$(document).ready(function () {
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
             var bar_data = {
                 data: dataForBar,
                 bars: { show: true }
@@ -199,8 +200,9 @@
                 },
                 colors: ['#3c8dbc'],
                 xaxis: {
-                    ticks: datetimeForBar
+                    ticks: [[1, 'Tháng 1'], [2, 'Tháng 2'], [3, 'Tháng 3'], [4, 'Tháng 4'], [5, 'Tháng 5'], [6, 'Tháng 6'], [7, 'Tháng 7'], [8, 'Tháng 8'], [9, 'Tháng 9'], [10, 'Tháng 10'], [11, 'Tháng 11'], [12, 'Tháng 12'] ]
                 }
             })
-        })</script>
+        })
+    </script>
 }

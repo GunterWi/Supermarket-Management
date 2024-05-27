@@ -19,7 +19,7 @@ namespace Grocery_Store.Controllers
                                   group sp by sp.MaLoai into spGroup
                                   let totalViews = spGroup.Sum(x => x.LuotXem)
                                   orderby totalViews descending
-                                  select spGroup.FirstOrDefault().LOAISP).Take(6).ToList();
+                                  select spGroup.FirstOrDefault().LOAISP).Take(6).ToList(); // just take 6
             ViewBag.sanPhams = (from sp in sanPhams where sp.DangSP == true orderby sp.NgayDangSP descending select sp).Take(6);
             ViewBag.loaiSPs = topLoaiSanPham;
             return View();

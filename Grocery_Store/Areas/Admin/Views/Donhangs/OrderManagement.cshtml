@@ -3,7 +3,21 @@
 @{
     ViewBag.Title = "OrderManagement";
 }
+@section css{
+    <style>
+        .sorting {
+            cursor: pointer;
+        }
 
+        .sorting_asc {
+            cursor: pointer;
+        }
+
+        .sorting_desc {
+            cursor: pointer;
+        }
+    </style>
+}
 <div class="content-wrapper">
     <div class="row">
         <div class="col-12">
@@ -30,11 +44,24 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
+                            <div class="row mb-2" style="display: flex;">
+                                <div class="col-sm-6" style="display: flex;">
+                                    <div class="form-group" style="margin-right: 10px;">
+                                        <label>Từ ngày:</label>
+                                        <input type="date" id="minDate" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Đến ngày:</label>
+                                        <input type="date" id="maxDate" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
                             <thead>
                                 <tr>
                                     <th>Mã đơn hàng</th>
                                     <th>Khách hàng</th>
                                     <th>Số lượng sản phẩm</th>
+                                    <th>Ngày tạo đơn</th>
                                     <th>Tổng giá</th>
                                     <th>Tình trạng</th>
                                     <th></th>
@@ -44,7 +71,7 @@
                                 @foreach (DONHANG donHang in Model)
                                 {
                                     int tongGia = 0;
-                                    int soLuongMA = 0;
+                                    int soLuongSP = 0;
                                     string tinhTrang = "";
                                     if (donHang.MaVanChuyen == null && donHang.ThanhCong == null)
                                     {
@@ -64,13 +91,14 @@
                                     }
                                     foreach (CHITIETDH chiTietDH in donHang.CHITIETDHs)
                                     {
-                                        tongGia += chiTietDH.GiaBan;
-                                        soLuongMA += chiTietDH.SoLuong;
+                                        tongGia += chiTietDH.GiaBan * chiTietDH.SoLuong;
+                                        soLuongSP += chiTietDH.SoLuong;
                                     }
                                     <tr>
                                         <td>@donHang.ID</td>
                                         <td><a href="@Url.Action("UserProfile","TaiKhoans", routeValues: new { id = donHang.TAIKHOAN.ID })">@donHang.TAIKHOAN.HoTen</a></td>
-                                        <td>@soLuongMA</td>
+                                        <td>@soLuongSP</td>
+                                        <td>@donHang.NgayDatHang.ToString("dd/MM/yyyy")</td>
                                         <td>@tongGia</td>
                                         @Html.Raw(tinhTrang)
                                         <td>
@@ -211,25 +239,42 @@
     <script src="~/Asset/Admin/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="~/Asset/Admin/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/Asset/Admin/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script>
-$(function () {
+        $(document).ready(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-           /* $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });*/
-    });
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)')
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var min = $('#minDate').val();
+                    var max = $('#maxDate').val();
+                    var date = moment(data[3], "DD/MM/YYYY").toDate(); 
+                    console.log(date);
+
+                    if (
+                        (min === "" && max === "") ||
+                        (min === "" && date <= moment(max, "YYYY-MM-DD").toDate()) ||
+                        (moment(min, "YYYY-MM-DD").toDate() <= date && max === "") ||
+                        (moment(min, "YYYY-MM-DD").toDate() <= date && date <= moment(max, "YYYY-MM-DD").toDate())
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            var table = $("#example1").DataTable();
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#minDate, #maxDate').change(function () {
+                table.draw();
+            });
+        });
     </script>
     <script>
-function truyenID(_id) {
+        function truyenID(_id) {
             $("input#id").val(_id)
-        }</script>
+        }
+    </script>
 }

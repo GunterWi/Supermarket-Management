@@ -158,6 +158,7 @@
     <Compile Include="Areas\Admin\Data\OrderSummary.cs" />
     <Compile Include="Areas\Admin\Data\UniquePathAttribute.cs" />
     <Compile Include="Areas\Admin\Data\UniqueUserAttribute.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -2619,6 +2620,9 @@
     <Content Include="Views\Products\Checkout.cshtml" />
     <Content Include="Views\Products\OrderManagement.cshtml" />
     <Content Include="Views\Homes\Contact.cshtml" />
+    <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Error\Authorize.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

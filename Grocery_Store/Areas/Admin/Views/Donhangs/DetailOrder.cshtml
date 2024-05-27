@@ -5,6 +5,7 @@
     DONHANG donHang = ViewBag.donHang;
     string ngayGiao = donHang.NgayGiaoHang != null ? donHang.NgayGiaoHang.Value.ToString("dd/MM/yyyy") : null;
     string tinhTrang = "";
+    var tongGia = 0;
     if (donHang.MaVanChuyen == null && donHang.ThanhCong == null)
     {
         tinhTrang = "<td class='text-info'>Đơn mới</td>";
@@ -105,20 +106,23 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
-                                <th>Sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Tổng giá bán</th>
-                                <th>Đánh giá</th>
+                                <th class="text-center">Sản phẩm</thclass="text-center">
+                                <th class="text-center">Số lượng</thclass="text-center">
+                                <th class="text-center">giá sản phẩm</th>
+                                <th class="text-center">Tổng</th>
+                                <th class="text-center">Đánh giá</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (CHITIETDH chiTietDH in Model)
                             {
+                                tongGia += chiTietDH.GiaBan * chiTietDH.SoLuong;
                                 <tr>
-                                    <td><a href="@Url.Action("Product","Shop", routeValues: new {id = chiTietDH.SANPHAM.TenDuongDan })">@chiTietDH.SANPHAM.TenSP</a></td>
-                                    <td>@chiTietDH.SoLuong</td>
-                                    <td>@chiTietDH.GiaBan</td>
-                                    <td>@chiTietDH.DanhGia</td>
+                                    <td class="text-center"><a href="@Url.Action("Product","Shop", routeValues: new {id = chiTietDH.SANPHAM.TenDuongDan })">@chiTietDH.SANPHAM.TenSP</a></td>
+                                    <td class="text-center">@chiTietDH.SoLuong</td>
+                                    <td class="text-center">@chiTietDH.GiaBan</td>
+                                    <td class="text-center">@tongGia</td>
+                                    <td class="text-center">@chiTietDH.DanhGia</td>
                                 </tr>
                             }
 

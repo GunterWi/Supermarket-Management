@@ -43,7 +43,7 @@
                             <p>Ghi chú</p>
                             @Html.TextAreaFor(m => m.GhiChuKhach)
                             <label>@Html.CheckBoxFor(m => m.XuatHD) Xuất hóa đơn</label>
-                            <button type="submit" class="btn btn-warning btn-block">Thanh toán</button>
+                            <button type="submit" class="btn btn-danger btn-block">Thanh toán</button>
                         </div>
                     </div>
                 </div>
@@ -199,7 +199,7 @@ function up(id, ev) {
             let tc = 0
             debugger
             $("[tt]").each(function () {
-                tc += parseInt($(this).text().substring(0, $(this).text().length - 4))
+                tc += parseInt($(this).text().substring(0, $(this).text().length - 2))
             })
             $("[tc=tong_cong]").text(tc + " ₫")
         }

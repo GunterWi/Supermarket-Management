@@ -18,7 +18,7 @@ namespace Grocery_Store.Models
         {
             get
             {
-                return ((int)(soLuong * sanPham.GiaKM ?? sanPham.GiaBan));
+                return ((int)(soLuong * (sanPham.GiaKM ?? sanPham.GiaBan)));
             }
         }
         public static List<GioHang> GetGioHang()
